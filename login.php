@@ -7,12 +7,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
   $password = $_POST['password'];
   $stmt = $connection->prepare("SELECT * FROM admins WHERE email = ? AND password = ?");
   $stmt->bind_param("ss", $email, md5($password));
-  $result = $stmt->execute();
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $users = $result->fetch_all(MYSQLI_ASSOC);
   header('Content-type: application/json');
   if (isset($_SESSION['settime_allow']) && date('H:i:s') < $_SESSION['settime_allow']) {
     echo json_encode(['success' => false, 'message' => "You can access after 5 minutes"]);
   } else {
-    if ($result === TRUE) {
+    if (count($users) == 1) {
       $_SESSION['email'] = $email;
       $_SESSION['trylogin'] = 0;
       echo json_encode(['success' => true]);

@@ -3,8 +3,8 @@ include_once "connect-to-sql.php";
 session_start();
 
 if (isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['email']) && isset($_POST['password'])) {
-  $firstName = $_POST['$firstName'];
-  $lastName = $_POST['$lastName'];
+  $firstName = $_POST['firstName'];
+  $lastName = $_POST['lastName'];
   $email = $_POST['email'];
   $password = $_POST['password'];
   $stmt = $connection->prepare("SELECT * FROM admins WHERE email = ?");
